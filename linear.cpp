@@ -26,30 +26,36 @@ int main()
     double alpha=0.01;
     double e=2.71828;
 
-    for (int i = 0; i< 40; i++){
+    for (int i = 0; i< 4000; i++){
 
-    int idx = i% 10;
-    double p = -(b0 + b1 * x1[idx]+ b2* x2[idx]); //making the prediction
-    double pred  = 1/(1+ pow(e,p)); //calculating final prediction applying sigmoid
-    err = y[idx]-pred;  //calculating the error
-    b0 = b0 - alpha * err*pred *(1-pred)* 1.0;   //updating b0
-    b1 = b1 + alpha * err * pred*(1-pred) *x1[idx];//updating b1
-    b2 = b2 + alpha * err * pred*(1-pred) * x2[idx];//updating b2
-    cout<<"B0="<<b0<<" "<<"B1="<<b1<<" "<<"B2="<<b2<<" error="<<err<<endl;// printing values after every step
-    error.push_back(err);
+        int idx = i% 10;
+        double p = -(b0 + b1 * x1[idx]+ b2* x2[idx]); //making the prediction
+        double pred  = 1/(1+ pow(e,p)); //calculating final prediction applying sigmoid
+        err = y[idx]-pred;  //calculating the error
+        b0 = b0 - alpha * err*pred *(1-pred)* 1.0;   //updating b0
+        b1 = b1 + alpha * err * pred*(1-pred) *x1[idx];//updating b1
+        b2 = b2 + alpha * err * pred*(1-pred) * x2[idx];//updating b2
+        cout<<"B0="<<b0<<" "<<"B1="<<b1<<" "<<"B2="<<b2<<" error="<<err<<endl;// printing values after every step
+        error.push_back(err);
+    }
 
-}
-sort(error.begin(),error.end(),custom_sort);//custom sort based on absolute error difference
-cout<<"Final Values are: "<<"B0="<<b0<<" "<<"B1="<<b1<<" "<<"B2="<<b2<<" error="<<error[0];
-  
-/*Testing Phase*/
-double test1,test2; //enter test x1 and x2
-cin>>test1>>test2;
-double pred=b0+b1*test1+b2*test2; //make prediction
-cout<<"The value predicted by the model= "<<pred<<endl;
-if(pred>0.5)
-pred=1;
-else
-pred=0;
-cout<<"The class predicted by the model= "<<pred;
+    sort(error.begin(),error.end(),custom_sort);//custom sort based on absolute error difference
+    cout<<error.size()<<endl;
+    cout<<"Finaddl Values are: "<<"B0="<<b0<<" "<<"B1="<<b1<<" "<<"B2="<<b2<<" error="<<error[0];
+
+    
+    
+    /*Testing Phase*/
+    double test1,test2; //enter test x1 and x2
+    cin>>test1>>test2;
+    double pred=b0+b1*test1+b2*test2; //make prediction
+    cout<<"The value predicted by the model= "<<pred<<endl;
+    if(pred>0.5)
+    pred=1;
+    else
+    pred=0;
+    cout<<"The class predicted by the model= "<<pred;
+    for(int i=0; i < error.size(); i++)
+        std::cout << error.at(i) << ' '<<endl;
+    return 0;
 }
